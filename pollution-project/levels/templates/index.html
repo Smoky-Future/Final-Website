@@ -1,0 +1,227 @@
+{% load static %}
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static "game/bluesky.css" %}">
+    <script src="{% static "game/game.js" %}"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-sm-8">
+                    <img src="{% static "logo.png" %}" />
+                </div>
+                <div class="col-sm">
+                    <div class="jumbotron" style="background-color:white">
+                        <h2> Emissions are going to make our future hazy. <br> It's a 'Now or Never' situation to save our environment</h2>
+                        <p>This is a CitrusHack project.In our project, we are considering data of Delhi.We choose Delhi as its one of the most hit city in world.Its a place where strict regulatory actions are most required. </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-100"></div>
+            <div class "col">
+                <div class="container">
+                    <div class="row">
+                        <h1> Delhi </h1>
+                    </div>
+                    <div class="row">
+                        <h2> Pollution Level in Delhi over the course of time </h2>
+                        <div style=" ;height : 80%">
+                            {{ plot|safe }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class "col">
+              <h1> Future Predictions </h1>
+              <table class="table table-bordered">
+                <thead style="background-color:black;color:white">
+                  <tr>
+                    <th scope="col">date</th>
+                    <th scope="col">pm2.5</th>
+                    <th scope="col">pm10</th>
+                    <th scope="col">o3</th>
+                    <th scope="col">no2</th>
+                    <th scope="col">so2</th>
+                    <th scope="col">co</th>
+                    <th scope="col"> Action Required</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for x in fields %}
+                  <tr>
+                    <th scope="row">{{x.1}}</th>
+                    {% for y in x.0 %}
+                    <th scope="row">{{y}}</th>
+
+                    {% endfor %}
+                    {% if x.0.0 < 120 %}
+                    <th scope="col" style="color:Green">No Action Required</th>
+                    {% elif x.0.0 < 180 %}
+                    <th scope="col" style="color:red">Encorage People to opt for public transportation</th>
+                    {% elif x.0.0 < 250 %}
+                    <th scope="col" style="color:red">Ban Diesel Vehicles</th>
+                    {% elif x.0.0 < 400 %}
+                    <th scope="col" style="color:red">Apply odd even policy</th>
+                    {% elif x.0.0 < 600 %}
+                    <th scope="col" style="color:red">Ban private transportations</th>
+                    {% else %}
+                    <th scope="col" style="color:red">Request neihbouring states to aplly similar policies</th>
+                  {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col">
+                <h1> Lets play this game to understand how climate affects our environment </h1>
+    <div class="centered">
+
+      <h1 id="health"><span class="badge badge-primary health">Health</span>100<span class="badge badge-primary pollution">Pollution</span> 200 </h1>
+
+      <img src="{% static "game/bird_start.png" %}" class="birdpic" id = "birdpic" width="350" height="350">
+      <!-- event log -->
+      <p id="log">Migration Season is here, but the journey is so far. Path is dim as thick smoke blocks the once bright sunlight...</p>
+        <table id = "gboard"><tr>
+        <th><button class="btn btn-outline-info"onclick = Hunt()>Hunt</button>  Restore health</th>
+        <th><button class="btn btn-outline-info"onclick = Travel()>Travel</button>  Migrate towards your destination</th>
+        </tr>
+        <tr>
+          <th><button class="btn btn-outline-info"onclick = Success()>Instawin</button> </th>
+        <th><button class="btn btn-outline-info"onclick = Defeat()>Instalose</button>  </th>
+        </tr>
+        </table>
+      </p>
+    </div>
+            </div>
+        </div>
+    </div>
+
+    <p> This is our CitrusHack project. Our team name is Smoky future. Our team members are Manas Srivastava, Vedant Kairnar, William Yang  and Anush Krishna. Our Source of data is https://aqicn.org/data-platform/register/ </p>
+
+
+</body>
+
+</html>
+<script>
+
+    var Health = 100;
+    //this links to our backend
+    var cur_pollution = 200;
+    var travel_cnt = 0;
+    var failed_chance = 0;
+
+    function Hunt() {
+        //cur_pollution =
+        //calc chance of failure
+        if ((Math.random() * 10000) % 100 >= failed_chance) {
+            document.getElementById("log").innerHTML = "You stopped and hunt some worms (+5 Health)";
+            Health = Health + 5;
+            set_pol();
+            Display_bird(1);
+
+            return;
+        }
+        //take more damage if failed
+        document.getElementById("log").innerHTML = "Heavy smog blocks your site. You can hardly breathe...";
+        lose_health(10);
+        if (Health <= 0) {
+            Defeat();
+            return;
+        }
+        set_pol();
+        Display_bird(0);
+        return;
+    }
+
+    function Travel() {
+        // failed_chance = (Math.random()*100000)%100-30;
+
+        if ((Math.random() * 10000) % 100 >= failed_chance) {
+            travel_cnt++;
+            document.getElementById("log").innerHTML = "You flew a while before you rest (+1 Progress)";
+            lose_health(15);
+            set_pol();
+            Display_bird(0);
+            //lose health here?
+            if (travel_cnt == 10) {
+                Success();
+                return;
+            }
+            return;
+        }
+        //sub this with data
+        document.getElementById("log").innerHTML = "Smogs are too thick and you crashed on a tree!";
+        lose_health(10);
+        if (Health <= 0) {
+            Defeat();
+            return;
+        }
+        set_pol();
+        Display_bird(0);
+        return;
+    }
+
+    function Defeat() {
+        document.getElementById('birdpic').src = "{% static "game/bird_lose.png" %}";
+        document.getElementById("log").innerHTML = "You are too tired... to carry on ...";
+        document.getElementById("gboard").innerHTML = "<a href \"\" type=\"button\" class=\"btn btn-primary button\">Try Again</a>";
+        //jump to defeat.html?
+        return;
+    }
+
+    function Success() {
+        document.getElementById('birdpic').src = "{% static "game/bird_win.png" %}";
+        document.getElementById("log").innerHTML = "You arrived your destination ... The smoke clears and you realized the clear sky is back again.";
+        document.getElementById("gboard").innerHTML = "<a href \"\" type=\"button\" class=\"btn btn-primary button\">Learn More About Air Pollution</a>";
+        return;
+        //jump to success.html?
+    }
+
+    function set_pol() {
+        //temporary, for testing purpose
+        cur_pollution = parseInt((Math.random() * 1000), 10) % 100;
+        failed_chance = cur_pollution - 10;
+        return;
+    }
+
+    function lose_health(r) {
+        Health = parseInt(Health - cur_pollution / r, 10);
+        return;
+    }
+
+    function Display_bird(state) {
+        //changes health and
+        document.getElementById("health").innerHTML = "<span class= \"badge badge-primary health\">Health</span>" + Health + "<span class=\"badge badge-primary pollution\">Pollution</span>" + cur_pollution;
+        if (state == 1) { //eat
+            document.getElementById('birdpic').src = "{% static "game/bird_eat.png" %}";
+        } else if (state == 2) { //win
+            document.getElementById('birdpic').src = "{% static "game/bird_win.png" %}";
+            return;
+        } else if (Health > 75) {
+            document.getElementById('birdpic').src = "{% static "game/bird_start.png" %}";
+        } else if (Health > 50) {
+            document.getElementById('birdpic').src = "{% static "game/bird_hurt.png" %}";
+        } else {
+            document.getElementById('birdpic').src = "{% static "game/bird_dying.png" %}";
+        }
+
+        return;
+    }
+</script>

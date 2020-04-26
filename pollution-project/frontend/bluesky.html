@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="bluesky.css">
+	<title>Clean Air</title>
+	<script src="game.js"></script>
+</head>
+<body>
+
+
+
+
+  <div class="centered" style="background-color: skyblue">
+	<h1></h1>
+    <h1 id="health"><span class="badge badge-primary health">Health</span>100<span class="badge badge-primary pollution">Pollution</span> 200 </h1>
+    
+    <img src="bird_start.png" class="birdpic" id = "birdpic" width="350" height="350">
+    <!-- event log -->
+    <p id="log">Migration Season is here, but the journey is so far. Path is dim as thick smoke blocks the once bright sunlight...</p>
+      <table id = "gboard"><tr>
+      <th><button class="btn btn-outline-info"onclick = Hunt()>Hunt</button>  Restore health</th>
+      <th><button class="btn btn-outline-info"onclick = Travel()>Travel</button>  Migrate towards your destination</th>
+      </tr>
+      <tr>
+        <th><button class="btn btn-outline-info"onclick = Success()>Instawin</button> </th>
+      <th><button class="btn btn-outline-info"onclick = Defeat()>Instalose</button>  </th>
+      </tr>
+      </table>
+   
+  </div>
+
+
+ 	
+
+
+</body>
+</html>
