@@ -1,4 +1,6 @@
-# Final-Website
+# Smoky Future
+
+
 It is a Django based website
 
 Prerequesties to run on local host are 
