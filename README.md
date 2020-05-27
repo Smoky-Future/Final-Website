@@ -1,5 +1,6 @@
 # Smoky Future
 
+![graph](https://github.com/Smoky-Future/Smoky-Future/blob/master/assets/graph.png)
 
 It is a Django based website
 
